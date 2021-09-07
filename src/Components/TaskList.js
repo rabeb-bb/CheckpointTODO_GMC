@@ -26,47 +26,49 @@ const useStyles = makeStyles((theme) => ({
 const TaskList = () => {
     const classes = useStyles();
     //local state
-    const [showAll, setShowAll] = useState(true)
-    const [showDone, setShowDone] = useState(false)
-    const [showUndone, setShowUndone] = useState(false)
+    const [show, setShow] = useState('all')
+    // const [showDone, setShowDone] = useState(false)
+    // const [showUndone, setShowUndone] = useState(false)
 
     //calling the state to display
     const tasks=useSelector(state => state.taskReducer.tasks)
 
     //handleClicks
-    const handleShow=()=>{
-        setShowDone(!showDone); 
-        setShowAll(false); 
-        setShowUndone(false)
-    }
+    // const handleShow=()=>{
+    //     setShowDone(!showDone); 
+    //     setShowAll(false); 
+    //     setShowUndone(false)
+    // }
     
-    const handleAll=()=>{
-        setShowDone(false); 
-        setShowAll(true); 
-        setShowUndone(false)
-    }
-    const handleUndone=()=>{
-        setShowDone(false); 
-        setShowAll(false); 
-        setShowUndone(!showUndone)
-    }
+    // const handleAll=()=>{
+    //     setShowDone(false); 
+    //     setShowAll(true); 
+    //     setShowUndone(false)
+    // }
+    // const handleUndone=()=>{
+    //     setShowDone(false); 
+    //     setShowAll(false); 
+    //     setShowUndone(!showUndone)
+    // }
 
 
     return (
         <div className={classes.root}>
             <ButtonGroup color="primary" aria-label="outlined primary button group">
-                <Button onClick={()=>handleAll()}>All</Button>
-                <Button onClick={()=>handleShow()}>Finished</Button>
-                <Button onClick={()=>handleUndone()}>Unfinished</Button>
+                <Button onClick={()=>setShow('all')}>All</Button>
+                <Button onClick={()=>setShow('done')}>Finished</Button>
+                <Button onClick={()=>setShow('undone')}>Unfinished</Button>
             </ButtonGroup>
             {/* show all */}
-            {showAll?tasks.length?tasks.map(el=> <Task key={el.id} task={el} />):<p>there are no todos</p>:null}
+            {show=='all'?tasks.length?tasks.map(el=> <Task key={el.id} task={el} />):<p>there are no todos</p>:
+            show=='done'?tasks.filter(el=> el.isDone).length?tasks.map(el=> el.isDone? <Task key={el.id} task={el} />:null):<p>there are no finished tasks</p>:
+            tasks.filter(el=> el.isDone==false).length?tasks.map(el=>el.isDone?null: <Task key={el.id} task={el} />):<p>there are no unfinished tasks</p>}
 
             {/* show finished tasks */}
-            {showDone?tasks.length?tasks.map(el=> el.isDone? <Task key={el.id} task={el} />:null):<p>there are no finished tasks</p>:null}
+            {/* {showDone?tasks.length?tasks.map(el=> el.isDone? <Task key={el.id} task={el} />:null):<p>there are no finished tasks</p>:null} */}
 
             {/* show unfinished tasks */}
-            {showUndone?tasks.length?tasks.map(el=>el.isDone?null: <Task key={el.id} task={el} />):<p>there are no unfinished tasks</p>:null}
+            {/* {showUndone?tasks.length?tasks.map(el=>el.isDone?null: <Task key={el.id} task={el} />):<p>there are no unfinished tasks</p>:null} */}
 
 
             {/* {tasks.length?tasks.map(el=> el.isDone?null:<Task key={el.id} task={el} />):<p>there are no todos</p>}
